@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,23 +7,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Produtos {
-  id              Int    @id @default(autoincrement())
-  nome            String
-  referencia      String
-  unidade_medida  String
-  vlr_venda       Float
-  estoque         Float?
-  fabricante      String?
-  local_fabricado String?
-  image_url       String?
+model Localidade {
+  municipio_id   Int       @id
+  municipio_nome String
+  uf_id          Int
+  uf_sigla       String
+  uf_nome        String
+  produtos       Produto[]
 }
 
-model Localidade {
-  id          Int    @id @default(autoincrement())
-  nome        String
-  endereco    String
-  cidade       String
-  estado       String
-  pais         String
+model Produto {
+  id                  Int         @id @default(autoincrement())
+  nome                String
+  referencia          String
+  unidade_medida      String
+  vlr_venda           Float
+  estoque             Float?      @default(0)
+  fabricante          String?
+  municipio_fabricado String?
+  uf_fabricado        String?
+  image_url           String?
+  localidade_id       Int?
+  localidade          Localidade? @relation(fields: [localidade_id], references: [municipio_id])
 }

@@ -1,44 +1,22 @@
 import { Injectable } from '@nestjs/common';
 const municipioTest = [
   {
-    id: 5200050,
-    nome: 'Abadia de Goiás',
-    microrregiao: {
-      id: 52010,
-      nome: 'Goiânia',
-      mesorregiao: {
-        id: 5203,
-        nome: 'Centro Goiano',
-        UF: {
-          id: 52,
-          sigla: 'GO',
-          nome: 'Goiás',
-          regiao: {
-            id: 5,
-            sigla: 'CO',
-            nome: 'Centro-Oeste',
-          },
-        },
-      },
-    },
-    'regiao-imediata': {
-      id: 520001,
-      nome: 'Goiânia',
-      'regiao-intermediaria': {
-        id: 5201,
-        nome: 'Goiânia',
-        UF: {
-          id: 52,
-          sigla: 'GO',
-          nome: 'Goiás',
-          regiao: {
-            id: 5,
-            sigla: 'CO',
-            nome: 'Centro-Oeste',
-          },
-        },
-      },
-    },
+    'municipio-id': 1100015,
+    'municipio-nome': "Alta Floresta D'Oeste",
+    'microrregiao-id': 11006,
+    'microrregiao-nome': 'Cacoal',
+    'mesorregiao-id': 1102,
+    'mesorregiao-nome': 'Leste Rondoniense',
+    'regiao-imediata-id': 110005,
+    'regiao-imediata-nome': 'Cacoal',
+    'regiao-intermediaria-id': 1102,
+    'regiao-intermediaria-nome': 'Ji-Paraná',
+    'UF-id': 11,
+    'UF-sigla': 'RO',
+    'UF-nome': 'Rondônia',
+    'regiao-id': 1,
+    'regiao-sigla': 'N',
+    'regiao-nome': 'Norte',
   },
 ];
 
