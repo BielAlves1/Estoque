@@ -1,6 +1,7 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, Min, MinLength, IsUrl } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, Min, MinLength, IsUrl, IsInt } from "class-validator";
+import { Produto } from "../entities/produto.entity";
 
-export class CreateProdutoDto {
+export class CreateProdutoDto extends Produto {
     @IsString()
     @IsNotEmpty({ message: 'O nome do produto não pode estar vazio.' })
     @MaxLength(50, { message: 'O nome do produto deve ter no máximo 50 caracteres.' })
@@ -40,4 +41,8 @@ export class CreateProdutoDto {
     @IsString()
     @IsOptional()
     image_url?: string;
+
+    @IsOptional()
+    @IsInt()
+    localidade_id?: number;
 }

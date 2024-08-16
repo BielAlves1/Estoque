@@ -36,7 +36,7 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 # dotenv environment variable files
-.env
+# removi o .env do git ignore pois fica mais fácil quando forem testar se já tiver o .env no git.
 .env.development.local
 .env.test.local
 .env.production.local
