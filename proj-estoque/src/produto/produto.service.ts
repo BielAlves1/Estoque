@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException} from '@nestjs/common';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import { UpdateProdutoDto } from './dto/update-produto.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -9,27 +9,104 @@ export class ProdutoService {
   constructor(private readonly prisma: PrismaService) {}
   async create(createProdutoDto: CreateProdutoDto): Promise<Produto> {
     const produto = await this.prisma.produto.create({
-      data: {
-        ...createProdutoDto,
+      data: { ...createProdutoDto },
+    });
+
+    if (!produto) {
+      throw new HttpException('Erro ao criar produto!', HttpStatus.BAD_REQUEST);
+    } else {
+      return produto;
+    }
+  }
+
+  async findAll() {
+    const produtos = await this.prisma.produto.findMany();
+
+    if (produtos.length === 0) {
+      throw new NotFoundException(
+        'Não existem produtos cadastrados para listar.',
+      );
+    } else {
+      return produtos;
+    }
+  }
+
+  async findOne(id: number) {
+    const produto = await this.prisma.produto.findUnique({
+      where: { id },
+    });
+
+    if (!produto) {
+      throw new NotFoundException('Erro: Produto não encontrado.');
+    } else {
+      return produto;
+    }
+  }
+
+  async findName(nome: string) {
+    const produtos = await this.prisma.produto.findMany({
+      where: {
+        nome: {
+          contains: nome,
+          mode: 'insensitive',
+        },
       },
     });
 
-    return produto;
+    if (produtos.length === 0) {
+      throw new NotFoundException(
+        'Erro: Nenhum produto encontrado com esse nome.',
+      );
+    } else {
+      return produtos;
+    }
   }
 
-  findAll() {
-    return `This action returns all produto`;
+  async update(id: number, updateProdutoDto: UpdateProdutoDto): Promise<Produto> {
+    try {
+      const produto = await this.prisma.produto.update({
+        where: {
+          id,
+        },
+        data: { ...updateProdutoDto },
+      });
+
+      return produto;
+    } catch (error) {
+      if (error.code === 'P2025') {
+        throw new NotFoundException(
+          `Produto com o ID '${id}' não encontrado para realizar alterações.`,
+        );
+      } else {
+        throw new HttpException(
+          'Erro ao alterar dados do produto.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} produto`;
-  }
+  async remove(id: number) {
+    try {
+      const produto = await this.prisma.produto.delete({
+        where: { id },
+      });
 
-  update(id: number, updateProdutoDto: UpdateProdutoDto) {
-    return `This action updates a #${id} produto`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} produto`;
+      return {
+        produto,
+        message: 'Produto excluído com sucesso.',
+      };
+    } catch (error) {
+      if (error.code === 'P2025') {
+        throw new NotFoundException(
+          `Produto com o ID '${id}' não encontrado para ser excluído.`,
+        );
+      } else {
+        throw new HttpException(
+          'Erro ao excluir produto.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
   }
 }
