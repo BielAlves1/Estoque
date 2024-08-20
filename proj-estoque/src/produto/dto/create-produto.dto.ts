@@ -5,11 +5,11 @@ export class CreateProdutoDto extends Produto {
     @IsString()
     @IsNotEmpty({ message: 'O nome do produto não pode estar vazio.' })
     @MaxLength(50, { message: 'O nome do produto deve ter no máximo 50 caracteres.' })
-    name: string;
+    nome: string;
 
     @IsString()
     @IsNotEmpty({ message: 'A referência não pode estar vazia.' })
-    @MaxLength(50, { message: 'A referência deve ter no máximo 50 caracteres.' })
+    @MaxLength(50, { message: 'A referência deve ter no máximo 15 caracteres.' })
     referencia: string;
 
     @IsString()

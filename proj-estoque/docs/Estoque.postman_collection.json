@@ -1,0 +1,203 @@
+{
+	"info": {
+		"_postman_id": "f8a6289f-9eb1-4d5f-804a-6034e5b3594a",
+		"name": "Estoque",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37201876"
+	},
+	"item": [
+		{
+			"name": "Produto",
+			"item": [
+				{
+					"name": "Read_All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/produto/read",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"produto",
+								"read"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read_One",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/produto/read-one/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"produto",
+								"read-one",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read_Name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/produto/read-name/mouse",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"produto",
+								"read-name",
+								"mouse"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read_Reference",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/produto/read-reference/A123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"produto",
+								"read-reference",
+								"A123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read_Fabricante",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/produto/read-fabricante/Teksul",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"produto",
+								"read-fabricante",
+								"Teksul"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Mouse Redragon Pika\",\r\n    \"referencia\": \"A123\",\r\n    \"unidade_medida\": \"UN\",\r\n    \"vlr_venda\": 142.99\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/produto/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"produto",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fabricante\": \"Teksul\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/produto/update/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"produto",
+								"update",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/produto/delete/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"produto",
+								"delete",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Localidade",
+			"item": []
+		}
+	]
+}

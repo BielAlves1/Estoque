@@ -7,27 +7,42 @@ import { UpdateProdutoDto } from './dto/update-produto.dto';
 export class ProdutoController {
   constructor(private readonly produtoService: ProdutoService) {}
 
-  @Post()
+  @Post('create')
   create(@Body() createProdutoDto: CreateProdutoDto) {
     return this.produtoService.create(createProdutoDto);
   }
 
-  @Get()
+  @Get('read')
   findAll() {
     return this.produtoService.findAll();
   }
 
-  @Get(':id')
+  @Get('read-one/:id')
   findOne(@Param('id') id: string) {
     return this.produtoService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Get('read-name/:nome')
+  findName(@Param('nome') nome: string) {
+    return this.produtoService.findName(nome);
+  }
+
+  @Get('read-reference/:referencia')
+  findReference(@Param('referencia') referencia: string) {
+    return this.produtoService.findReference(referencia);
+  }
+
+  @Get('read-fabricante/:fabricante')
+  findManufac(@Param('fabricante') fabricante: string) {
+    return this.produtoService.findManufac(fabricante);
+  }
+
+  @Patch('update/:id')
   update(@Param('id') id: string, @Body() updateProdutoDto: UpdateProdutoDto) {
     return this.produtoService.update(+id, updateProdutoDto);
   }
 
-  @Delete(':id')
+  @Delete('delete/:id')
   remove(@Param('id') id: string) {
     return this.produtoService.remove(+id);
   }

@@ -1,12 +1,13 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException} from '@nestjs/common';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import { UpdateProdutoDto } from './dto/update-produto.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from 'src/database/prisma.service';
 import { Produto } from './entities/produto.entity';
 
 @Injectable()
 export class ProdutoService {
   constructor(private readonly prisma: PrismaService) {}
+
   async create(createProdutoDto: CreateProdutoDto): Promise<Produto> {
     const produto = await this.prisma.produto.create({
       data: { ...createProdutoDto },
@@ -56,6 +57,38 @@ export class ProdutoService {
     if (produtos.length === 0) {
       throw new NotFoundException(
         'Erro: Nenhum produto encontrado com esse nome.',
+      );
+    } else {
+      return produtos;
+    }
+  }
+
+  async findReference(referencia: string) {
+    const produtos = await this.prisma.produto.findMany({
+      where: {
+        referencia,
+      },
+    });
+
+    if (produtos.length === 0) {
+      throw new NotFoundException(
+        'Erro: Nenhum produto encontrado com essa referencia.',
+      );
+    } else {
+      return produtos;
+    }
+  }
+
+  async findManufac(fabricante: string) {
+    const produtos = await this.prisma.produto.findMany({
+      where: {
+        fabricante,
+      },
+    });
+
+    if (produtos.length === 0) {
+      throw new NotFoundException(
+        'Erro: Nenhum produto encontrado deste fabricante.',
       );
     } else {
       return produtos;
