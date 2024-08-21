@@ -13,7 +13,6 @@ model Localidade {
   uf_id          Int
   uf_sigla       String
   uf_nome        String
-  produtos       Produto[]
 }
 
 model Produto {
@@ -24,9 +23,5 @@ model Produto {
   vlr_venda           Float
   estoque             Float?      @default(0)
   fabricante          String?
-  municipio_fabricado String?
-  uf_fabricado        String?
   image_url           String?
-  localidade_id       Int?
-  localidade          Localidade? @relation(fields: [localidade_id], references: [municipio_id])
 }

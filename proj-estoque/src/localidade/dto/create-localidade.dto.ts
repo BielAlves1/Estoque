@@ -1,6 +1,4 @@
 import { IsInt, IsString, ValidateNested, IsOptional } from 'class-validator';
-import { Type } from 'class-transformer';
-import { CreateProdutoDto } from 'src/produto/dto/create-produto.dto';
 
 export class CreateLocalidadeDto {
     @IsInt()
@@ -17,9 +15,4 @@ export class CreateLocalidadeDto {
 
     @IsString()
     uf_nome: string;
-
-    @IsOptional()
-    @ValidateNested({ each: true })
-    @Type(() => CreateProdutoDto)
-    produtos?: CreateProdutoDto[]
 }

@@ -7,9 +7,9 @@ import { UpdateLocalidadeDto } from './dto/update-localidade.dto';
 export class LocalidadeController {
   constructor(private readonly localidadeService: LocalidadeService) {}
 
-  @Post()
-  create(@Body() createLocalidadeDto: CreateLocalidadeDto) {
-    return this.localidadeService.create(createLocalidadeDto);
+  @Post('read-create/')
+  findOrCreate(@Body() createLocalidadeDto: CreateLocalidadeDto) {
+    return this.localidadeService.findOrCreate(createLocalidadeDto);
   }
 
   @Get()

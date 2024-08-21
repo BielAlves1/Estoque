@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, Min, MinLength, IsUrl, IsInt } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, Min } from "class-validator";
 import { Produto } from "../entities/produto.entity";
 
 export class CreateProdutoDto extends Produto {
@@ -32,17 +32,5 @@ export class CreateProdutoDto extends Produto {
 
     @IsString()
     @IsOptional()
-    municipio_fabricado?: string;
-
-    @IsString()
-    @IsOptional()
-    uf_fabricado?: string;
-
-    @IsString()
-    @IsOptional()
     image_url?: string;
-
-    @IsOptional()
-    @IsInt()
-    localidade_id?: number;
 }
