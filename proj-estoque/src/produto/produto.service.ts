@@ -24,9 +24,7 @@ export class ProdutoService {
     const produtos = await this.prisma.produto.findMany();
 
     if (produtos.length === 0) {
-      throw new NotFoundException(
-        'Não existem produtos cadastrados para listar.',
-      );
+      throw new NotFoundException('Não existem produtos cadastrados para listar.');
     } else {
       return produtos;
     }

@@ -1,6 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateLocalidadeDto } from './dto/create-localidade.dto';
-import { UpdateLocalidadeDto } from './dto/update-localidade.dto';
 import { PrismaService } from 'src/database/prisma.service';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
@@ -10,12 +9,11 @@ export class LocalidadeService {
   constructor(private readonly prisma: PrismaService, private readonly httpService: HttpService) {}
 
   async findOrCreate(createLocalidadeDto: CreateLocalidadeDto) {
-    const { municipio_nome, uf_nome } = createLocalidadeDto;
+    const { municipio_nome } = createLocalidadeDto;
 
     const existingLocalidade = await this.prisma.localidade.findFirst({
       where: {
-        municipio_nome,
-        uf_nome,
+        municipio_nome
       },
     });
 
@@ -23,14 +21,15 @@ export class LocalidadeService {
       return existingLocalidade;
     }
 
-    const ibgeURL = `https://servicodados.ibge.gov.br/api/v1/localidades/municipios/${municipio_nome}`;
+    const municiNomeFormat = municipio_nome.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ç/g, 'c').replace(/ /g, '-'); 
+
+
+    const ibgeURL = `https://servicodados.ibge.gov.br/api/v1/localidades/municipios/${municiNomeFormat}`;
     const response = await firstValueFrom(this.httpService.get(ibgeURL));
 
-    const [localidadeData] = response.data;
+    const localidadeData = response.data;
     if (!localidadeData) {
-      throw new Error(
-        `Município ${municipio_nome} não encontrado na API do IBGE`,
-      );
+      throw new NotFoundException(`Município ${municipio_nome} não encontrado na API do IBGE`);
     }
 
     const newLocalidade = {
@@ -46,19 +45,26 @@ export class LocalidadeService {
     });
   }
 
-  findAll() {
-    return `This action returns all localidade`;
+  async findAll() {
+    const localidades = await this.prisma.localidade.findMany();
+
+    if (localidades.length === 0) {
+      throw new NotFoundException('Não existe cidades cadastradas para listar.');
+    } else {
+      return localidades;
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} localidade`;
-  }
+  async findCity(nome: string) {
+    const localidades = await this.prisma.localidade.findMany({
+      where: {
+        municipio_nome: {
+          contains: nome,
+          mode: 'insensitive',
+        },
+      },
+    });
 
-  update(id: number, updateLocalidadeDto: UpdateLocalidadeDto) {
-    return `This action updates a #${id} localidade`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} localidade`;
+    return localidades;
   }
 }

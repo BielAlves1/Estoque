@@ -7,28 +7,18 @@ import { UpdateLocalidadeDto } from './dto/update-localidade.dto';
 export class LocalidadeController {
   constructor(private readonly localidadeService: LocalidadeService) {}
 
-  @Post('read-create/')
+  @Post('read-create')
   findOrCreate(@Body() createLocalidadeDto: CreateLocalidadeDto) {
     return this.localidadeService.findOrCreate(createLocalidadeDto);
   }
 
-  @Get()
+  @Get('read-all')
   findAll() {
     return this.localidadeService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.localidadeService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLocalidadeDto: UpdateLocalidadeDto) {
-    return this.localidadeService.update(+id, updateLocalidadeDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.localidadeService.remove(+id);
+  @Get('read-city/:nome')
+  findCity(@Param('nome') nome: string) {
+    return this.localidadeService.findCity(nome);
   }
 }
