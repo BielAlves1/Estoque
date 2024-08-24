@@ -8,59 +8,62 @@ import { Response } from 'express';
 
 @Injectable()
 export class LocalidadeService {
-  constructor(private readonly prisma: PrismaService, private readonly httpService: HttpService) {}
+  constructor(private readonly prisma: PrismaService, private readonly httpService: HttpService) { }
 
-  async findOrCreate(createLocalidadeDto: CreateLocalidadeDto, res: Response) {
+  async findOrCreate(createLocalidadeDto: CreateLocalidadeDto) {
     const { municipio_nome } = createLocalidadeDto;
 
-    // const existingLocalidade = await this.prisma.localidade.findFirst({
-    //   where: {
-    //     municipio_nome,
-    //   },
-    // });
-    
-    const existingLocalidade = await this.findCity(municipio_nome)
+    const existingLocalidades = await this.prisma.localidade.findMany({
+      where: {
+        municipio_nome,
+      },
+    });
 
-    if (existingLocalidade) {
-      return res.status(HttpStatus.OK).json({
+    if (existingLocalidades.length > 0) {
+      return {
         statusCode: HttpStatus.OK,
-        message: 'Localidade já existe',
-        data: existingLocalidade,
-      });
+        data: existingLocalidades,
+      };
     }
 
-    const municiNomeFormat = municipio_nome.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ç/g, 'c').replace(/ /g, '-'); 
+    const municiNomeFormat = municipio_nome.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ç/g, 'c').replace(/ /g, '-');
 
+    let localidadeData;
+    try {
+      const ibgeURL = `https://servicodados.ibge.gov.br/api/v1/localidades/municipios/${municiNomeFormat}`;
+      const response = await firstValueFrom(this.httpService.get(ibgeURL));
+      localidadeData = response.data;
+      console.log('URL da API:', ibgeURL);
+    } catch (error) {
+      throw new HttpException(`Erro ao acessar a API do IBGE: ${error.message}`, HttpStatus.BAD_REQUEST);
+    }
 
-  let localidadeData;
-  try {
-    const ibgeURL = `https://servicodados.ibge.gov.br/api/v1/localidades/municipios/${municiNomeFormat}`;
-    const response = await firstValueFrom(this.httpService.get(ibgeURL));
-    localidadeData = response.data;
-  } catch (error) {
-    throw new HttpException(`Erro ao acessar a API do IBGE: ${error.message}`, HttpStatus.BAD_REQUEST);
-  }
+    if (!localidadeData || !Array.isArray(localidadeData) || localidadeData.length === 0) {
+      throw new NotFoundException(`Município ${municipio_nome} não encontrado na API do IBGE`);
+    }
 
-  if (!localidadeData || !localidadeData.id) {
-    throw new NotFoundException(`Município ${municipio_nome} não encontrado na API do IBGE`);
-  }
+    const newLocalidades = localidadeData.map(data => ({
+      municipio_id: data.id,
+      municipio_nome: data.nome,
+      uf_id: data.microrregiao.mesorregiao.UF.id,
+      uf_sigla: data.microrregiao.mesorregiao.UF.sigla,
+      uf_nome: data.microrregiao.mesorregiao.UF.nome,
+    }));
 
-    const newLocalidade = {
-      municipio_id: localidadeData.id,
-      municipio_nome: localidadeData.nome,
-      uf_id: localidadeData.microrregiao.mesorregiao.UF.id,
-      uf_sigla: localidadeData.microrregiao.mesorregiao.UF.sigla,
-      uf_nome: localidadeData.microrregiao.mesorregiao.UF.nome,
-    };
-
-    const createdLocalidade = await this.prisma.localidade.create({
-      data: newLocalidade,
+    await this.prisma.localidade.createMany({
+      data: newLocalidades,
+      skipDuplicates: true, // Evita criar registros duplicados
     });
-  
+
+    const allLocalidades = await this.prisma.localidade.findMany({
+      where: {
+        municipio_nome,
+      },
+    });
+
     return {
       statusCode: HttpStatus.CREATED,
-      message: 'Localidade criada com sucesso',
-      data: createdLocalidade,
+      data: allLocalidades,
     };
   }
 
@@ -83,11 +86,11 @@ export class LocalidadeService {
         },
       },
     });
-  
+
     if (localidades.length === 0) {
       throw new NotFoundException('Não existem cidades cadastradas para listar.');
     }
-  
+
     return localidades;
   }
 }

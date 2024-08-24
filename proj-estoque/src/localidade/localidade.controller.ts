@@ -5,16 +5,17 @@ import { Response } from 'express';
 
 @Controller('localidade')
 export class LocalidadeController {
-  constructor(private readonly localidadeService: LocalidadeService) {}
+  constructor(private readonly localidadeService: LocalidadeService) { }
 
   @Post('read-create')
-  findOrCreate(@Body() createLocalidadeDto: CreateLocalidadeDto, @Res() res: Response) {
-    const result = this.localidadeService.findOrCreate(createLocalidadeDto);
+  async findOrCreate(@Body() createLocalidadeDto: CreateLocalidadeDto, @Res() res: Response) {
+    const result = await this.localidadeService.findOrCreate(createLocalidadeDto);
+
     if (result.statusCode === HttpStatus.OK) {
       return res.status(HttpStatus.OK).json(result);
-    } else if (result.statusCode === HttpStatus.CREATED) {
+    } else {
       return res.status(HttpStatus.CREATED).json(result);
-    } 
+    }
   }
 
   @Get('read-all')
