@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ProdutoService } from './produto.service';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import { UpdateProdutoDto } from './dto/update-produto.dto';
@@ -13,8 +13,8 @@ export class ProdutoController {
   }
 
   @Get('read')
-  findAll() {
-    return this.produtoService.findAll();
+  findAll(@Query('estoque') estoque?: string, @Query('vlr_venda') vlr_venda?: string, @Query('nome') nome?: string,) {
+    return this.produtoService.findAll({ estoque, vlr_venda, nome });
   }
 
   @Get('read-one/:id')
