@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateLocalidadeDto } from './dto/create-localidade.dto';
 import { PrismaService } from 'src/database/prisma.service';
 import { HttpService } from '@nestjs/axios';
@@ -8,7 +13,10 @@ import { Response } from 'express';
 
 @Injectable()
 export class LocalidadeService {
-  constructor(private readonly prisma: PrismaService, private readonly httpService: HttpService) { }
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly httpService: HttpService,
+  ) {}
 
   async findOrCreate(createLocalidadeDto: CreateLocalidadeDto) {
     const { municipio_nome } = createLocalidadeDto;
@@ -26,7 +34,12 @@ export class LocalidadeService {
       };
     }
 
-    const municiNomeFormat = municipio_nome.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ç/g, 'c').replace(/ /g, '-');
+    const municiNomeFormat = municipio_nome
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/ç/g, 'c')
+      .replace(/ /g, '-');
 
     let localidadeData;
     try {
@@ -34,20 +47,40 @@ export class LocalidadeService {
       const response = await firstValueFrom(this.httpService.get(ibgeURL));
       localidadeData = response.data;
     } catch (error) {
-      throw new HttpException(`Erro ao acessar a API do IBGE: ${error.message}`, HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        `Erro ao acessar a API do IBGE: ${error.message}`,
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
-    if (!localidadeData || (Array.isArray(localidadeData) && localidadeData.length === 0) || (typeof localidadeData === 'object' && Object.keys(localidadeData).length === 0)) {
-  throw new NotFoundException(`Município ${municipio_nome} não encontrado na API do IBGE`);
-}
+    if (!localidadeData || (Array.isArray(localidadeData) && localidadeData.length === 0) || (typeof localidadeData === 'object' && Object.keys(localidadeData).length === 0)) 
+    {
+      throw new NotFoundException(
+        `Município ${municipio_nome} não encontrado na API do IBGE`,
+      );
+    }
 
-    const newLocalidades = localidadeData.map(data => ({
-      municipio_id: data.id,
-      municipio_nome: data.nome,
-      uf_id: data.microrregiao.mesorregiao.UF.id,
-      uf_sigla: data.microrregiao.mesorregiao.UF.sigla,
-      uf_nome: data.microrregiao.mesorregiao.UF.nome,
-    }));
+    let newLocalidades = [];
+
+    if (Array.isArray(localidadeData)) {
+      newLocalidades = localidadeData.map((data) => ({
+        municipio_id: data.id,
+        municipio_nome: data.nome,
+        uf_id: data.microrregiao.mesorregiao.UF.id,
+        uf_sigla: data.microrregiao.mesorregiao.UF.sigla,
+        uf_nome: data.microrregiao.mesorregiao.UF.nome,
+      }));
+    } else if (typeof localidadeData === 'object') {
+      newLocalidades = [
+        {
+          municipio_id: localidadeData.id,
+          municipio_nome: localidadeData.nome,
+          uf_id: localidadeData.microrregiao.mesorregiao.UF.id,
+          uf_sigla: localidadeData.microrregiao.mesorregiao.UF.sigla,
+          uf_nome: localidadeData.microrregiao.mesorregiao.UF.nome,
+        },
+      ];
+    }
 
     await this.prisma.localidade.createMany({
       data: newLocalidades,
@@ -70,7 +103,9 @@ export class LocalidadeService {
     const localidades = await this.prisma.localidade.findMany();
 
     if (localidades.length === 0) {
-      throw new NotFoundException('Não existe cidades cadastradas para listar.');
+      throw new NotFoundException(
+        'Não existe cidades cadastradas para listar.',
+      );
     } else {
       return localidades;
     }
@@ -87,7 +122,9 @@ export class LocalidadeService {
     });
 
     if (localidades.length === 0) {
-      throw new NotFoundException('Não existem cidades cadastradas para listar.');
+      throw new NotFoundException(
+        'Não existem cidades cadastradas para listar.',
+      );
     }
 
     return localidades;
