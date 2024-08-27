@@ -32,23 +32,34 @@ Siga estes passos para configurar e rodar o projeto:
 
 1. **Clone o repositório**
 
-````bash
-   git clone https://github.com/BielAlves1/Estoque.git
+```bash
+   $ git clone https://github.com/BielAlves1/Estoque.git
+```
 
 2. **Acessar a pasta raiz do projeto e rodar os comandos abaixo:**
+
 ```bash
   $ npm install
+```
 
 3. **Configurar seu arquivo .env de acordo com o banco que criou localmente no PostgreSQL.**
+
 ```bash
   # Rodar o comando de migração.
   $ npx prisma migrate deploy
+```
 
 4. **Depois disso apenas startar o projeto no seu terminal:**
 
+```bash
   # Rodar em ambiente de desenvolvimento.
   $ npm run start:dev
 
   # Rodar em produção.
   $ npm start
-````
+```
+
+5. **Depois abrir seu Postman/Insomnia e seguir a documentação do Swagger**
+
+**Link documentação Swagger:** https://test-backend-production-99e5.up.railway.app/swagger
+**Link API online em produção:** https://test-backend-production-99e5.up.railway.app
