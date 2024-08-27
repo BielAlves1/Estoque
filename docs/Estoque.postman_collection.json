@@ -15,15 +15,48 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/produto/read",
-							"protocol": "http",
+							"raw": "https://test-backend-production-99e5.up.railway.app/produto/read?vlr_venda=asc",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"test-backend-production-99e5",
+								"up",
+								"railway",
+								"app"
 							],
-							"port": "3000",
 							"path": [
 								"produto",
 								"read"
+							],
+							"query": [
+								{
+									"key": "vlr_venda",
+									"value": "asc"
+								},
+								{
+									"key": "estoque",
+									"value": "asc",
+									"disabled": true
+								},
+								{
+									"key": "nome",
+									"value": "asc",
+									"disabled": true
+								},
+								{
+									"key": "vlr_venda",
+									"value": "desc",
+									"disabled": true
+								},
+								{
+									"key": "estoque",
+									"value": "desc",
+									"disabled": true
+								},
+								{
+									"key": "nome",
+									"value": "desc",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -35,12 +68,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/produto/read-one/3",
-							"protocol": "http",
+							"raw": "https://test-backend-production-99e5.up.railway.app/produto/read-one/3",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"test-backend-production-99e5",
+								"up",
+								"railway",
+								"app"
 							],
-							"port": "3000",
 							"path": [
 								"produto",
 								"read-one",
@@ -56,12 +91,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/produto/read-name/mouse",
-							"protocol": "http",
+							"raw": "https://test-backend-production-99e5.up.railway.app/produto/read-name/mouse",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"test-backend-production-99e5",
+								"up",
+								"railway",
+								"app"
 							],
-							"port": "3000",
 							"path": [
 								"produto",
 								"read-name",
@@ -77,16 +114,18 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/produto/read-reference/A123",
-							"protocol": "http",
+							"raw": "https://test-backend-production-99e5.up.railway.app/produto/read-reference/MR123",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"test-backend-production-99e5",
+								"up",
+								"railway",
+								"app"
 							],
-							"port": "3000",
 							"path": [
 								"produto",
 								"read-reference",
-								"A123"
+								"MR123"
 							]
 						}
 					},
@@ -98,16 +137,46 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/produto/read-fabricante/Teksul",
-							"protocol": "http",
+							"raw": "https://test-backend-production-99e5.up.railway.app/produto/read-fabricante/Kingston",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"test-backend-production-99e5",
+								"up",
+								"railway",
+								"app"
 							],
-							"port": "3000",
 							"path": [
 								"produto",
 								"read-fabricante",
-								"Teksul"
+								"Kingston"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read_Image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://test-backend-production-99e5.up.railway.app/produto/read-image?image_url=true",
+							"protocol": "https",
+							"host": [
+								"test-backend-production-99e5",
+								"up",
+								"railway",
+								"app"
+							],
+							"path": [
+								"produto",
+								"read-image"
+							],
+							"query": [
+								{
+									"key": "image_url",
+									"value": "true"
+								}
 							]
 						}
 					},
@@ -120,7 +189,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\": \"Mouse Redragon Pika\",\r\n    \"referencia\": \"A123\",\r\n    \"unidade_medida\": \"UN\",\r\n    \"vlr_venda\": 142.99,\r\n    \"fabricante\": \"WINDEL\"\r\n}",
+							"raw": "{\r\n    \"nome\": \"Teclado foda\",\r\n    \"referencia\": \"random\",\r\n    \"unidade_medida\": \"UN\",\r\n    \"vlr_venda\": 120.99\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -128,12 +197,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/produto/create",
-							"protocol": "http",
+							"raw": "https://test-backend-production-99e5.up.railway.app/produto/create",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"test-backend-production-99e5",
+								"up",
+								"railway",
+								"app"
 							],
-							"port": "3000",
 							"path": [
 								"produto",
 								"create"
@@ -149,7 +220,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"fabricante\": \"Teksul\"\r\n}",
+							"raw": "{\r\n    \"estoque\": 10\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -157,16 +228,18 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/produto/update/3",
-							"protocol": "http",
+							"raw": "https://test-backend-production-99e5.up.railway.app/produto/update/4",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"test-backend-production-99e5",
+								"up",
+								"railway",
+								"app"
 							],
-							"port": "3000",
 							"path": [
 								"produto",
 								"update",
-								"3"
+								"4"
 							]
 						}
 					},
@@ -178,16 +251,18 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/produto/delete/1",
-							"protocol": "http",
+							"raw": "https://test-backend-production-99e5.up.railway.app/produto/delete/4",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"test-backend-production-99e5",
+								"up",
+								"railway",
+								"app"
 							],
-							"port": "3000",
 							"path": [
 								"produto",
 								"delete",
-								"1"
+								"4"
 							]
 						}
 					},
@@ -213,12 +288,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/localidade/read-create",
-							"protocol": "http",
+							"raw": "https://test-backend-production-99e5.up.railway.app/localidade/read-create",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"test-backend-production-99e5",
+								"up",
+								"railway",
+								"app"
 							],
-							"port": "3000",
 							"path": [
 								"localidade",
 								"read-create"
@@ -245,12 +322,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/localidade/read-all",
-							"protocol": "http",
+							"raw": "https://test-backend-production-99e5.up.railway.app/localidade/read-all",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"test-backend-production-99e5",
+								"up",
+								"railway",
+								"app"
 							],
-							"port": "3000",
 							"path": [
 								"localidade",
 								"read-all"
@@ -269,7 +348,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"municipio_nome\": \"rio-de-janeiro\"\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -277,16 +356,18 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/localidade/read-city/caxias",
-							"protocol": "http",
+							"raw": "https://test-backend-production-99e5.up.railway.app/localidade/read-city/Caxias",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"test-backend-production-99e5",
+								"up",
+								"railway",
+								"app"
 							],
-							"port": "3000",
 							"path": [
 								"localidade",
 								"read-city",
-								"caxias"
+								"Caxias"
 							]
 						}
 					},

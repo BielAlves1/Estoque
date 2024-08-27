@@ -112,6 +112,22 @@ export class ProdutoService {
     }
   }
 
+  async findByImage(hasImage: boolean): Promise<Produto[]> {
+    const produtos = await this.prisma.produto.findMany({
+      where: {
+        image_url: hasImage ? { not: null } : null,
+      },
+    });
+
+    if (produtos.length === 0) {
+      throw new NotFoundException(
+        hasImage ? 'Nenhum produto com imagem cadastrada foi encontrado.' : 'Nenhum produto sem imagem cadastrada foi encontrado.',
+      );
+    } else {
+      return produtos;
+    }
+  }
+
   async update(id: number, updateProdutoDto: UpdateProdutoDto): Promise<Produto> {
     try {
       const produto = await this.prisma.produto.update({
