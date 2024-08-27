@@ -22,52 +22,33 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+# ESTOQUE
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+**Descrição:** Este projeto é uma API back-end que fornece funcionalidades para gerenciar produtos e localidades. Ele utiliza [NestJS](https://nestjs.com/) como framework principal e [Prisma](https://www.prisma.io/) como ORM para interagir com o banco de dados PostgreSQL. A API também integra-se com a [API do IBGE](https://servicodados.ibge.gov.br/api/docs/localidades) para obter informações sobre localidades. Ou seja, é necessário ter NodeJs, Prisma e PostgreSQL instalados na sua máquina para o funcionamento correto.
 
-## Installation
+## Instalação
 
+Siga estes passos para configurar e rodar o projeto:
+
+1. **Clone o repositório**
+
+````bash
+   git clone https://github.com/BielAlves1/Estoque.git
+
+2. **Acessar a pasta raiz do projeto e rodar os comandos abaixo:**
 ```bash
-$ npm install
-```
+  $ npm install
 
-## Running the app
-
+3. **Configurar seu arquivo .env de acordo com o banco que criou localmente no PostgreSQL.**
 ```bash
-# development
-$ npm run start
+  # Rodar o comando de migração.
+  $ npx prisma migrate deploy
 
-# watch mode
-$ npm run start:dev
+4. **Depois disso apenas startar o projeto no seu terminal:**
 
-# production mode
-$ npm run start:prod
-```
+  # Rodar em ambiente de desenvolvimento.
+  $ npm run start:dev
 
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+  # Rodar em produção.
+  $ npm start
+````

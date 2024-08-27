@@ -33,7 +33,6 @@ export class LocalidadeService {
       const ibgeURL = `https://servicodados.ibge.gov.br/api/v1/localidades/municipios/${municiNomeFormat}`;
       const response = await firstValueFrom(this.httpService.get(ibgeURL));
       localidadeData = response.data;
-      console.log('URL da API:', ibgeURL);
     } catch (error) {
       throw new HttpException(`Erro ao acessar a API do IBGE: ${error.message}`, HttpStatus.BAD_REQUEST);
     }
@@ -52,7 +51,7 @@ export class LocalidadeService {
 
     await this.prisma.localidade.createMany({
       data: newLocalidades,
-      skipDuplicates: true, // Evita criar registros duplicados
+      skipDuplicates: true,
     });
 
     const allLocalidades = await this.prisma.localidade.findMany({
