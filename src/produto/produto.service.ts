@@ -31,6 +31,7 @@ export class ProdutoService {
     vlr_venda?: string;
     nome?: string;
   }) {
+    // Não seria Where?
     let orderBy = [];
 
     if (orderByParams?.estoque) {
@@ -61,6 +62,7 @@ export class ProdutoService {
   }
 
   async findOne(id: number) {
+    // faltou validação se existe id
     const produto = await this.prisma.produto.findUnique({
       where: { id },
     });
@@ -160,6 +162,7 @@ export class ProdutoService {
           `Produto com o ID '${id}' não encontrado para realizar alterações.`,
         );
       } else {
+        // Qual erro?
         throw new HttpException(
           'Erro ao alterar dados do produto.',
           HttpStatus.BAD_REQUEST,
@@ -179,11 +182,13 @@ export class ProdutoService {
         message: 'Produto excluído com sucesso.',
       };
     } catch (error) {
+      // Validar antes de tentar excluir
       if (error.code === 'P2025') {
         throw new NotFoundException(
           `Produto com o ID '${id}' não encontrado para ser excluído.`,
         );
       } else {
+        // Qual erro?
         throw new HttpException(
           'Erro ao excluir produto.',
           HttpStatus.BAD_REQUEST,

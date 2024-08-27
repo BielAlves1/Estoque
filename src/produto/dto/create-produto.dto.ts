@@ -14,7 +14,8 @@ export class CreateProdutoDto extends Produto {
   @ApiProperty({
     description: 'Nome do produto',
     maxLength: 50,
-    example: 'Teclado foda Redragon',
+    // Cuidar palavreado, isso é um teste
+    example: 'Teclado Redragon',
   })
   @IsNotEmpty({ message: 'O nome do produto não pode estar vazio.' })
   @IsString({

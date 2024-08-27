@@ -70,6 +70,7 @@ export class ProdutoController {
     return this.produtoService.findOne(+id);
   }
 
+  // Essas rotas poderiam ser somente uma, passando qual o filtro desejado de busca.
   @Get('read-name/:nome')
   @ApiOperation({ summary: 'Retorna um produto por nome' })
   @ApiParam({ name: 'nome', description: 'Nome do produto' })
@@ -78,7 +79,7 @@ export class ProdutoController {
   findName(@Param('nome') nome: string) {
     return this.produtoService.findName(nome);
   }
-
+  // Essas rotas poderiam ser somente uma, passando qual o filtro desejado de busca.
   @Get('read-reference/:referencia')
   @ApiOperation({ summary: 'Retorna um produto por referência' })
   @ApiParam({ name: 'referencia', description: 'Referência do produto' })
@@ -87,7 +88,7 @@ export class ProdutoController {
   findReference(@Param('referencia') referencia: string) {
     return this.produtoService.findReference(referencia);
   }
-
+  // Essas rotas poderiam ser somente uma, passando qual o filtro desejado de busca.
   @Get('read-fabricante/:fabricante')
   @ApiOperation({ summary: 'Retorna um produto por fabricante' })
   @ApiParam({ name: 'fabricante', description: 'Fabricante do produto' })
@@ -113,6 +114,7 @@ export class ProdutoController {
       'Lista de produtos filtrados por imagem retornada com sucesso.',
   })
   findByImage(@Query('image_url') image_url?: string) {
+    // Rota estranha
     const hasImage = image_url === 'true';
     return this.produtoService.findByImage(hasImage);
   }
