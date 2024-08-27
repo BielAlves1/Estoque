@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import { UpdateProdutoDto } from './dto/update-produto.dto';
 import { PrismaService } from 'src/database/prisma.service';
@@ -6,7 +6,7 @@ import { Produto } from './entities/produto.entity';
 
 @Injectable()
 export class ProdutoService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async create(createProdutoDto: CreateProdutoDto): Promise<Produto> {
     const produto = await this.prisma.produto.create({
@@ -20,8 +20,27 @@ export class ProdutoService {
     }
   }
 
-  async findAll() {
-    const produtos = await this.prisma.produto.findMany();
+  async findAll(orderByParams?: { estoque?: string; vlr_venda?: string; nome?: string }) {
+    let orderBy = [];
+
+    if (orderByParams?.estoque) {
+      orderBy.push({ estoque: orderByParams.estoque });
+    }
+    if (orderByParams?.vlr_venda) {
+      orderBy.push({ vlr_venda: orderByParams.vlr_venda });
+    }
+    if (orderByParams?.nome) {
+      orderBy.push({ nome: orderByParams.nome });
+    }
+
+
+    if (orderBy.length === 0) {
+      orderBy = [];
+    }
+
+    const produtos = await this.prisma.produto.findMany({
+      orderBy,
+    });
 
     if (produtos.length === 0) {
       throw new NotFoundException('Não existem produtos cadastrados para listar.');
