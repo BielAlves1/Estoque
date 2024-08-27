@@ -37,9 +37,9 @@ export class LocalidadeService {
       throw new HttpException(`Erro ao acessar a API do IBGE: ${error.message}`, HttpStatus.BAD_REQUEST);
     }
 
-    if (!localidadeData || !Array.isArray(localidadeData) || localidadeData.length === 0) {
-      throw new NotFoundException(`Município ${municipio_nome} não encontrado na API do IBGE`);
-    }
+    if (!localidadeData || (Array.isArray(localidadeData) && localidadeData.length === 0) || (typeof localidadeData === 'object' && Object.keys(localidadeData).length === 0)) {
+  throw new NotFoundException(`Município ${municipio_nome} não encontrado na API do IBGE`);
+}
 
     const newLocalidades = localidadeData.map(data => ({
       municipio_id: data.id,
