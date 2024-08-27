@@ -1,13 +1,28 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
-import { ProdutoService } from './produto.service';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
+import {
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import { UpdateProdutoDto } from './dto/update-produto.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ProdutoService } from './produto.service';
 
 @ApiTags('produto')
 @Controller('produto')
 export class ProdutoController {
-  constructor(private readonly produtoService: ProdutoService) { }
+  constructor(private readonly produtoService: ProdutoService) {}
 
   @Post('create')
   @ApiOperation({ summary: 'Cria um novo produto.' })
@@ -19,11 +34,30 @@ export class ProdutoController {
 
   @Get('read')
   @ApiOperation({ summary: 'Lista todos os produtos.' })
-  @ApiQuery({ name: 'estoque', required: false, description: 'Filtra produtos por estoque' })
-  @ApiQuery({ name: 'vlr_venda', required: false, description: 'Filtra produtos por valor de venda' })
-  @ApiQuery({ name: 'nome', required: false, description: 'Filtra produtos por nome' })
-  @ApiResponse({ status: 200, description: 'Lista de produtos retornada com sucesso.' })
-  findAll(@Query('estoque') estoque?: string, @Query('vlr_venda') vlr_venda?: string, @Query('nome') nome?: string) {
+  @ApiQuery({
+    name: 'estoque',
+    required: false,
+    description: 'Filtra produtos por estoque',
+  })
+  @ApiQuery({
+    name: 'vlr_venda',
+    required: false,
+    description: 'Filtra produtos por valor de venda',
+  })
+  @ApiQuery({
+    name: 'nome',
+    required: false,
+    description: 'Filtra produtos por nome',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de produtos retornada com sucesso.',
+  })
+  findAll(
+    @Query('estoque') estoque?: string,
+    @Query('vlr_venda') vlr_venda?: string,
+    @Query('nome') nome?: string,
+  ) {
     return this.produtoService.findAll({ estoque, vlr_venda, nome });
   }
 
@@ -64,9 +98,20 @@ export class ProdutoController {
   }
 
   @Get('read-image')
-  @ApiOperation({ summary: 'Lista produtos filtrados por disponibilidade de imagem.' })
-  @ApiQuery({ name: 'image_url', required: false, description: 'Filtra produtos por imagem disponível (true para produtos com imagem, false para produtos sem imagem)' })
-  @ApiResponse({ status: 200, description: 'Lista de produtos filtrados por imagem retornada com sucesso.' })
+  @ApiOperation({
+    summary: 'Lista produtos filtrados por disponibilidade de imagem.',
+  })
+  @ApiQuery({
+    name: 'image_url',
+    required: false,
+    description:
+      'Filtra produtos por imagem disponível (true para produtos com imagem, false para produtos sem imagem)',
+  })
+  @ApiResponse({
+    status: 200,
+    description:
+      'Lista de produtos filtrados por imagem retornada com sucesso.',
+  })
   findByImage(@Query('image_url') image_url?: string) {
     const hasImage = image_url === 'true';
     return this.produtoService.findByImage(hasImage);
@@ -75,8 +120,14 @@ export class ProdutoController {
   @Patch('update/:id')
   @ApiOperation({ summary: 'Atualiza/altera informações de um produto' })
   @ApiParam({ name: 'id', description: 'ID do produto' })
-  @ApiResponse({ status: 200, description: 'Produto alterado/atualizado com sucesso.' })
-  @ApiResponse({ status: 404, description: 'Produto não encontrado para realizar alteração.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Produto alterado/atualizado com sucesso.',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Produto não encontrado para realizar alteração.',
+  })
   update(@Param('id') id: string, @Body() updateProdutoDto: UpdateProdutoDto) {
     return this.produtoService.update(+id, updateProdutoDto);
   }
