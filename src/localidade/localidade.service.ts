@@ -95,8 +95,9 @@ export class LocalidadeService {
 
     return {
       statusCode: HttpStatus.CREATED,
-      data: allLocalidades,
+      data: (allLocalidades && allLocalidades.length > 0) ? allLocalidades : newLocalidades,
     };
+    
   }
 
   async findAll() {
