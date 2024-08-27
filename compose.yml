@@ -1,0 +1,14 @@
+# Adicionar docker compose simples para criar um container de PostgreSQL
+version: '3'
+services:
+  db:
+    image: postgres:12.9
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: db
+    ports:
+      - 5434:5432
+    restart: always
+    volumes:
+      - ./data:/var/lib/postgresql/data
