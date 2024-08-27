@@ -1,14 +1,20 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { PrismaService } from 'src/database/prisma.service';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import { UpdateProdutoDto } from './dto/update-produto.dto';
-import { PrismaService } from 'src/database/prisma.service';
 import { Produto } from './entities/produto.entity';
 
 @Injectable()
 export class ProdutoService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(createProdutoDto: CreateProdutoDto): Promise<Produto> {
+    // Falta validação dos campos
     const produto = await this.prisma.produto.create({
       data: { ...createProdutoDto },
     });
@@ -20,7 +26,12 @@ export class ProdutoService {
     }
   }
 
-  async findAll(orderByParams?: { estoque?: string; vlr_venda?: string; nome?: string }) {
+  async findAll(orderByParams?: {
+    estoque?: string;
+    vlr_venda?: string;
+    nome?: string;
+  }) {
+    // Não seria Where?
     let orderBy = [];
 
     if (orderByParams?.estoque) {
@@ -33,7 +44,6 @@ export class ProdutoService {
       orderBy.push({ nome: orderByParams.nome });
     }
 
-
     if (orderBy.length === 0) {
       orderBy = [];
     }
@@ -43,13 +53,16 @@ export class ProdutoService {
     });
 
     if (produtos.length === 0) {
-      throw new NotFoundException('Não existem produtos cadastrados para listar.');
+      throw new NotFoundException(
+        'Não existem produtos cadastrados para listar.',
+      );
     } else {
       return produtos;
     }
   }
 
   async findOne(id: number) {
+    // faltou validação se existe id
     const produto = await this.prisma.produto.findUnique({
       where: { id },
     });
@@ -121,14 +134,19 @@ export class ProdutoService {
 
     if (produtos.length === 0) {
       throw new NotFoundException(
-        hasImage ? 'Nenhum produto com imagem cadastrada foi encontrado.' : 'Nenhum produto sem imagem cadastrada foi encontrado.',
+        hasImage
+          ? 'Nenhum produto com imagem cadastrada foi encontrado.'
+          : 'Nenhum produto sem imagem cadastrada foi encontrado.',
       );
     } else {
       return produtos;
     }
   }
 
-  async update(id: number, updateProdutoDto: UpdateProdutoDto): Promise<Produto> {
+  async update(
+    id: number,
+    updateProdutoDto: UpdateProdutoDto,
+  ): Promise<Produto> {
     try {
       const produto = await this.prisma.produto.update({
         where: {
@@ -144,6 +162,7 @@ export class ProdutoService {
           `Produto com o ID '${id}' não encontrado para realizar alterações.`,
         );
       } else {
+        // Qual erro?
         throw new HttpException(
           'Erro ao alterar dados do produto.',
           HttpStatus.BAD_REQUEST,
@@ -163,11 +182,13 @@ export class ProdutoService {
         message: 'Produto excluído com sucesso.',
       };
     } catch (error) {
+      // Validar antes de tentar excluir
       if (error.code === 'P2025') {
         throw new NotFoundException(
           `Produto com o ID '${id}' não encontrado para ser excluído.`,
         );
       } else {
+        // Qual erro?
         throw new HttpException(
           'Erro ao excluir produto.',
           HttpStatus.BAD_REQUEST,
